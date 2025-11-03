@@ -1,0 +1,21 @@
+---
+title: "Release Notes"
+date: "10-31-2025"
+date-modified: last-modified
+engine: markdown
+format: 
+  html:
+    toc: true
+---
+
+# 0.0.0-dev.1: ???? (??-??-????)
+
+## Features
+
+- `regurgitate` creates a "Code Appendix" at the end of your document containing all code blocks.
+- Configuration options:
+  - `group-by-language`: Group code blocks in appendix by programming language.
+  - `show-code-inline`: Control whether code remains inline or is removed.
+  - `show-output-results`: Control whether execution results are included in appendix.
+- Supports multiple programming languages (Python, R, Julia, etc.).
+

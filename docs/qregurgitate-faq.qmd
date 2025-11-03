@@ -1,0 +1,255 @@
+---
+title: "Frequently Asked Questions"
+date: "11-02-2024"
+date-modified: last-modified
+engine: markdown
+format: 
+  html:
+    toc: true
+---
+
+# General Information
+
+## What is the regurgitate extension for Quarto?
+
+The `regurgitate` extension for Quarto is a filter that automatically collects all code blocks from your document and places them in a "Code Appendix" at the end. It provides flexible options for organizing code by programming language, controlling whether code appears inline, and managing execution results.
+
+## Why would I use the regurgitate extension?
+
+The regurgitate extension is useful when you want to:
+
+- Provide a complete code reference at the end of your document
+- Allow readers to see examples in context while having easy access to all code
+- Create clean narratives by moving code to an appendix
+- Organize multi-language tutorials with language-specific sections
+- Generate copy-pasteable code snippets separate from output
+
+# Installation
+
+## How do I install the regurgitate extension?
+
+To install the extension in your Quarto project:
+
+```bash
+quarto add coatless-quarto/regurgitate
+```
+
+Or manually copy the `_extensions/regurgitate` folder into your project's `_extensions` directory.
+
+Your project structure should include:
+
+```bash
+your-project/
+├── _extensions/
+│   └── coatless-quarto/
+│       └── regurgitate/
+│           ├── _extension.yml
+│           └── regurgitate.lua
+└── your-document.qmd
+```
+
+## Is the regurgitate extension compatible with all Quarto versions?
+
+The `regurgitate` extension requires Quarto v1.7.0 or later. It has been tested with both standalone code blocks and Quarto executable cells (Python, R, etc.).
+
+# Configuration
+
+## What configuration options are available?
+
+The regurgitate extension provides four configuration options:
+
+```yaml
+extensions:
+  regurgitate:
+    group-by-language: false      # Organize by language
+    show-code-inline: true        # Show code inline
+    show-output-results: true     # Include execution results
+    debug: false                  # Enable debug logging
+```
+
+## How do I enable the extension in my document?
+
+Add the filter to your document's YAML header:
+
+```yaml
+---
+title: "My Document"
+format: html
+filters:
+  - regurgitate
+---
+```
+
+This will use all default settings and create a code appendix at the end.
+
+## What does the group-by-language option do?
+
+When `group-by-language: true`, code blocks in the appendix are organized by programming language with subsection headers:
+
+```yaml
+extensions:
+  regurgitate:
+    group-by-language: true
+```
+
+Your appendix will have sections like:
+
+```markdown
+# Code Appendix
+
+## Python
+[Python code blocks]
+
+## R
+[R code blocks]
+
+## JavaScript
+[JavaScript code blocks]
+```
+
+## What does show-code-inline control?
+
+The `show-code-inline` option controls whether code remains in its original position:
+
+- `true` (default): Code appears both inline and in the appendix
+- `false`: Code is removed from inline positions and only appears in the appendix
+
+```yaml
+extensions:
+  regurgitate:
+    show-code-inline: false  # Clean narrative, code only at end
+```
+
+## What does show-output-results do?
+
+The `show-output-results` option controls whether code execution results are included in the appendix:
+
+- `true` (default): Results are copied to the appendix with code
+- `false`: Only code appears in the appendix (no output)
+
+```yaml
+extensions:
+  regurgitate:
+    show-output-results: false  # Clean code snippets only
+```
+
+This is useful when you want readers to see what code does inline, but have clean, copy-pasteable code at the end.
+
+# Usage
+
+## How do I create a code appendix?
+
+Just add the filter to your YAML header:
+
+````markdown
+---
+title: "Tutorial"
+format: html
+filters:
+  - regurgitate
+---
+
+## Example
+
+```python
+print("Hello, World!")
+```
+
+More content here...
+````
+
+A "Code Appendix" section will automatically appear at the end with all code blocks.
+
+## Can I use this with Quarto executable cells?
+
+Yes! The extension works with both standalone code blocks and Quarto executable cells:
+
+````markdown
+---
+title: "Data Analysis"
+format: html
+filters:
+  - regurgitate
+---
+
+```{{python}}
+import pandas as pd
+data = pd.read_csv("data.csv")
+print(data.head())
+```
+````
+
+Both the code and its output will be collected.
+
+## How do I create an organized multi-language appendix?
+
+Use `group-by-language: true` to organize code by language:
+
+```yaml
+---
+title: "Web Development Tutorial"
+format: html
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    group-by-language: true
+---
+```
+
+Your appendix will have separate sections for R, Python, Julia, etc.
+
+## What if my cell has multiple code chunks?
+
+The extension handles cells with multiple code chunks correctly. Each chunk and its results are collected:
+
+```{{python}}
+print("First chunk")
+
+print("Second chunk")
+```
+
+Both chunks will appear in the appendix.
+
+## Can I use this extension with other filters?
+
+Yes! The regurgitate extension works alongside other Quarto filters. Just list them in order:
+
+```yaml
+filters:
+  - other-filter
+  - regurgitate
+  - another-filter
+```
+
+The order may matter depending on what each filter does.
+
+## Does this work with all output formats?
+
+The extension is designed for HTML output formats. While it may work with other formats, it's primarily tested with:
+
+- `html`
+- `revealjs` 
+- Quarto websites
+- Quarto books
+
+
+# Troubleshooting
+
+## My code blocks aren't appearing in the appendix. What should I do?
+
+First, verify that:
+
+1. The extension is installed in `_extensions/coatless-quarto/regurgitate/`
+2. The filter is listed in your YAML header: `filters: [regurgitate]`
+3. Your code blocks have language identifiers (e.g., ` ```python`)
+
+If issues persist, enable debug mode:
+
+```yaml
+extensions:
+  regurgitate:
+    debug: true
+```
+
+This will show detailed logging to help diagnose the issue.

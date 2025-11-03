@@ -1,0 +1,75 @@
+---
+title: "Regurgitate with Language Grouping"
+format: html
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    group-by-language: true
+    show-code-inline: true
+    show-output-results: true
+---
+
+## Introduction
+
+This document demonstrates the `regurgitate` extension with language grouping enabled, e.g. `group-by-language: true`. Code blocks will be organized by programming language at the end.
+
+## Python Example
+
+Here's some Python code:
+
+```python
+def hello():
+    print("Hello, world!")
+    
+hello()
+```
+
+## Data Analysis
+
+Let's do some calculations:
+
+```{r}
+# R code
+data <- c(1, 2, 3, 4, 5)
+mean(data)
+```
+
+## Shell Commands
+
+Some bash commands:
+
+```bash
+echo "Building project..."
+make clean
+make all
+```
+
+## More Python
+
+Another Python snippet:
+
+```python
+import numpy as np
+
+arr = np.array([1, 2, 3])
+print(arr.mean())
+```
+
+## JavaScript Example
+
+A quick JavaScript function:
+
+```javascript
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+console.log(greet("World"));
+```
+
+## Conclusion
+
+With `group-by-language: true`, all code blocks are grouped by language in the Code Appendix. Languages appear in alphabetical order with subsection headers.
+
+Since `show-code-inline: true` (the default), code blocks remain in their original positions above and are also copied to the appendix.

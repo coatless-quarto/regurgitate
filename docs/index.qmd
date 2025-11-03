@@ -1,6 +1,11 @@
-# regurgitate  <img src="docs/regurgitate-animated-logo.svg" align ="right" alt="" width ="150"/>
+---
+title: "Home"
+format: 
+  html:
+    toc: false
+---
 
-The regurgitate Quarto extension collects code blocks and their execution results, placing them in a "Code Appendix" at the end of your document.
+The `regurgitate` Quarto extension collects code blocks and their execution results, placing them in a "Code Appendix" at the end of your document.
 
 ## Installation
 

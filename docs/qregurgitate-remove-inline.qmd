@@ -1,0 +1,75 @@
+---
+title: "Code Only in Appendix"
+format: html
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    group-by-language: true
+    show-code-inline: false
+    show-output-results: true
+---
+
+## Introduction
+
+This document demonstrates the `regurgitate` extension with `show-code-inline: false`. Code blocks are removed from their original positions and only appear at the end, organized by language.
+
+## Python Example
+
+Here's some Python code (it won't appear here, but will be in the appendix):
+
+```python
+def hello():
+    print("Hello, world!")
+    
+hello()
+```
+
+Notice: No code is displayed above this line.
+
+## Data Analysis
+
+Let's do some calculations (again, code moved to appendix):
+
+```r
+# R code
+data <- c(1, 2, 3, 4, 5)
+mean(data)
+```
+
+## Shell Commands
+
+Some bash commands (also in appendix only):
+
+```bash
+echo "Building project..."
+make clean
+make all
+```
+
+## More Python
+
+Another Python snippet:
+
+```python
+import numpy as np
+
+arr = np.array([1, 2, 3])
+print(arr.mean())
+```
+
+## JavaScript Example
+
+A quick JavaScript function:
+
+```javascript
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+console.log(greet("World"));
+```
+
+## Conclusion
+
+This document contains no inline code blocks. All code has been moved to the Code Appendix at the end, organized by programming language.

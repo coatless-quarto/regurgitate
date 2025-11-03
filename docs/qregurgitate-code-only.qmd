@@ -1,0 +1,49 @@
+---
+title: "Code Only (No Results in Appendix)"
+format: html
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    group-by-language: true
+    show-code-inline: true
+    show-output-results: false
+---
+
+## Introduction
+
+This document demonstrates `show-output-results: false`, which includes only code in the appendix without execution results.
+
+This is useful when you want readers to see output inline but have a clean code reference at the end.
+
+## Python Example
+
+Let's do some calculations:
+
+```{python}
+print("Hello from Python!")
+result = 2 + 2
+print(f"2 + 2 = {result}")
+```
+
+The output appears above inline, but won't be repeated in the appendix.
+
+## R Example
+
+Some R calculations:
+
+```{r}
+# Create a vector
+numbers <- c(1, 2, 3, 4, 5)
+print(paste("Sum:", sum(numbers)))
+print(paste("Mean:", mean(numbers)))
+```
+
+## Conclusion
+
+In the Code Appendix at the end, you'll see:
+
+- All code blocks grouped by language
+- No execution results/output (because `show-output-results: false`)
+
+This creates a cleaner code reference while keeping output visible inline for understanding.

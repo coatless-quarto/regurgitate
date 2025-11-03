@@ -1,0 +1,50 @@
+---
+title: "Code Appendix with Results"
+format: html
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    group-by-language: false
+    show-code-inline: true
+    show-output-results: true
+---
+
+## Introduction
+
+This document demonstrates how the `regurgitate` extension handles code execution results. 
+
+With `show-output-results: true` (the default), both code and its output are copied to the appendix.
+
+## Python Example
+
+Let's do some calculations:
+
+```{python}
+print("Hello from Python!")
+result = 2 + 2
+print(f"2 + 2 = {result}")
+```
+
+## R Example
+
+Some R calculations:
+
+```{r}
+# Create a vector
+numbers <- c(1, 2, 3, 4, 5)
+print(paste("Sum:", sum(numbers)))
+print(paste("Mean:", mean(numbers)))
+
+plot(numbers)
+```
+
+## Conclusion
+
+Notice that in the Code Appendix at the end:
+
+- Code blocks are shown
+- Output/results from code execution are also shown (because `show-output-results: true`)
+
+To see only code without results in the appendix, set `show-output-results: false`.
+

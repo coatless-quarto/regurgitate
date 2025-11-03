@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 2521 2911">
+  <defs>
+    <style>
+      .st0, .st1 {
+        fill: #fff;
+      }
+
+      .st2 {
+        opacity: .6;
+        stroke-width: 49px;
+      }
+
+      .st2, .st3, .st1 {
+        isolation: isolate;
+      }
+
+      .st2, .st3, .st4 {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: round;
+      }
+
+      .st3 {
+        opacity: .4;
+        stroke-width: 56px;
+      }
+
+      .st5 {
+        opacity: .5;
+      }
+
+      .st1 {
+        font-family: HelveticaNeue-Light, 'Helvetica Neue';
+        font-size: 279px;
+        font-weight: 300;
+        letter-spacing: .03em;
+      }
+
+      .st6 {
+        fill: url(#linear-gradient);
+        stroke: #06b6d4;
+        stroke-width: 35px;
+      }
+
+      .st4 {
+        stroke-width: 42px;
+      }
+
+      /* Animation Styles - Subtle and continuous */
+      @keyframes hexagonGlow {
+        0%, 100% {
+          filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.4));
+        }
+        50% {
+          filter: drop-shadow(0 0 30px rgba(6, 182, 212, 0.8));
+        }
+      }
+
+      @keyframes outerBracket {
+        0%, 100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      @keyframes middleBracket {
+        0%, 100% {
+          opacity: 0.45;
+        }
+        50% {
+          opacity: 0.75;
+        }
+      }
+
+      @keyframes innerBracket {
+        0%, 100% {
+          opacity: 0.75;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes dotPulse {
+        0%, 100% {
+          opacity: 0.4;
+        }
+        50% {
+          opacity: 0.6;
+        }
+      }
+
+      .st6 {
+        animation: hexagonGlow 3s ease-in-out infinite;
+      }
+
+      /* Left brackets - animate from outer to inner */
+      .st3.left-outer {
+        animation: outerBracket 2s ease-in-out infinite;
+        animation-delay: 0s;
+      }
+
+      .st2.left-middle {
+        animation: middleBracket 2s ease-in-out infinite;
+        animation-delay: 0.25s;
+      }
+
+      .st4.left-inner {
+        animation: innerBracket 2s ease-in-out infinite;
+        animation-delay: 0.5s;
+      }
+
+      /* Dots continue the sequence */
+      .st5 circle:nth-child(1) {
+        animation: dotPulse 2s ease-in-out infinite;
+        animation-delay: 0.75s;
+      }
+
+      .st5 circle:nth-child(2) {
+        animation: dotPulse 2s ease-in-out infinite;
+        animation-delay: 0.9s;
+      }
+
+      .st5 circle:nth-child(3) {
+        animation: dotPulse 2s ease-in-out infinite;
+        animation-delay: 1.05s;
+      }
+
+      .st5 circle:nth-child(4) {
+        animation: dotPulse 2s ease-in-out infinite;
+        animation-delay: 1.2s;
+      }
+
+      .st5 circle:nth-child(5) {
+        animation: dotPulse 2s ease-in-out infinite;
+        animation-delay: 1.35s;
+      }
+
+      .st5 circle:nth-child(6) {
+        animation: dotPulse 2s ease-in-out infinite;
+        animation-delay: 1.5s;
+      }
+
+      /* Right brackets - continue from dots outward */
+      .st4.right-inner {
+        animation: innerBracket 2s ease-in-out infinite;
+        animation-delay: 1.75s;
+      }
+
+      .st2.right-middle {
+        animation: middleBracket 2s ease-in-out infinite;
+        animation-delay: 2s;
+      }
+
+      .st3.right-outer {
+        animation: outerBracket 2s ease-in-out infinite;
+        animation-delay: 2.25s;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="962.59" y1="1876.27" x2="963.59" y2="1875.27" gradientTransform="translate(-2276646.89 5124557.97) scale(2365.2 -2731.2)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0e7490"/>
+      <stop offset="1" stop-color="#0891b2"/>
+    </linearGradient>
+  </defs>
+  
+  <path class="st6" d="M2443.1,776.1l-178.1-102.9c-252.8-183.2-693.3-408.3-1004.5-579.9-353.4,202.8-724.6,418.3-1007.6,581.6l-175,101.2v1365.6l1182.6,682.8,1182.6-682.8V776.1Z"/>
+  
+  <g>
+    <path class="st3 left-outer" d="M510.98,1157.66h-140v557h140"/>
+    <path class="st2 left-middle" d="M691.98,1227.66h-112v417h112"/>
+    <path class="st4 left-inner" d="M858.98,1296.66h-70v279h70"/>
+  </g>
+  
+  <g>
+    <path class="st3 right-outer" d="M1958.86,1158.58h140v557h-140"/>
+    <path class="st2 right-middle" d="M1777.86,1228.58h112v417h-112"/>
+    <path class="st4 right-inner" d="M1610.86,1297.58h70v279h-70"/>
+  </g>
+  
+  <g class="st5">
+    <circle class="st0" cx="975" cy="1436.16" r="21"/>
+    <circle class="st0" cx="1072" cy="1436.16" r="21"/>
+    <circle class="st0" cx="1170" cy="1436.16" r="21"/>
+    <circle class="st0" cx="1351" cy="1436.16" r="21"/>
+    <circle class="st0" cx="1449" cy="1436.16" r="21"/>
+    <circle class="st0" cx="1546" cy="1436.16" r="21"/>
+  </g>
+  
+  <text class="st1" transform="translate(597.75 2301.73)"><tspan x="0" y="0">regurgitate</tspan></text>
+</svg>

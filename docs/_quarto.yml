@@ -1,0 +1,42 @@
+project:
+  type: website
+
+website:
+  title: "regurgitate"
+  reader-mode: true
+  repo-url: https://github.com/coatless-quarto/regurgitate/
+  repo-actions: [edit, issue]
+  sidebar:
+    logo: "regurgitate-animated-logo.svg"
+    logo-alt: "A hexagon logo for the regurgitate extension."
+    style: "floating"
+    search: true
+    tools:
+      - icon: github
+        href: https://github.com/coatless-quarto/regurgitate/
+    contents: 
+      - text: "Home"
+        file: index.qmd
+      - section: "Demos"
+        contents:
+        - text: "Code Only"
+          file: qregurgitate-code-only.qmd
+        - text: "Code in Appendix Only"
+          file: qregurgitate-remove-inline.qmd
+        - text: "Appendix with Results"
+          file: qregurgitate-with-results.qmd
+        - text: "Grouped Programming Languages"
+          file: qregurgitate-grouped.qmd
+      - section: "Support"
+        contents:
+        - text: "FAQ"
+          href: qregurgitate-faq.qmd
+        - text: "Submit an issue"
+          href: https://github.com/coatless-quarto/regurgitate/issues/new/choose
+      - section: "Extra"
+        contents:
+        - qregurgitate-release-notes.qmd
+
+format: 
+  html:
+    toc: true
