@@ -247,8 +247,9 @@ end
 -- that follow it. Other code blocks need a language class; unclassed blocks
 -- are usually results.
 -- @param block pandoc.CodeBlock The code block to check
+-- @param filename string|nil Filename from the block's filename wrapper
 -- @return boolean True if the block was collected
-local function collect_code_block(block)
+local function collect_code_block(block, filename)
   if block.classes:includes("cell-code") then
     if not current_cell or not current_cell.include
       or not should_include_in_appendix(block) then
@@ -260,7 +261,7 @@ local function collect_code_block(block)
       results = {},
       lang = get_cell_lang(block),
       is_cell = true,
-      filename = get_filename(block) or current_cell.filename
+      filename = filename or get_filename(block) or current_cell.filename
     }
     table.insert(code_blocks, last_entry)
     log("  -> Added cell code block (total now: " .. #code_blocks .. ")")
@@ -280,7 +281,7 @@ local function collect_code_block(block)
     results = {},
     lang = block.classes[1],
     is_cell = false,
-    filename = get_filename(block)
+    filename = filename or get_filename(block)
   })
   log("  -> Added standalone code block (total now: " .. #code_blocks .. ")")
   return true
@@ -309,6 +310,25 @@ local function collect_div(div)
     return nil, false
   end
   return nil
+end
+
+--- Collect a code block that Quarto wrapped to show its filename.
+-- Quarto moves a cell's filename option into this wrapper before user filters
+-- run, so the filename can only be read here.
+-- @param node table The DecoratedCodeBlock custom node
+-- @return nil|table Unchanged node, or an empty list to remove it
+-- @return boolean|nil False to skip the wrapped code block
+local function collect_decorated_code(node)
+  local block = node.code_block
+  if not block or block.t ~= "CodeBlock" then
+    return nil
+  end
+  
+  if collect_code_block(block, node.filename) and not options.show_code_inline then
+    -- Remove the code together with its filename label
+    return {}
+  end
+  return nil, false
 end
 
 --- Collect a code block during the walk.
@@ -601,6 +621,11 @@ end
 -- @return table Array of filter tables
 return {
   {Meta = Meta},
-  {traverse = "topdown", Div = collect_div, CodeBlock = collect_code},
+  {
+    traverse = "topdown",
+    Div = collect_div,
+    DecoratedCodeBlock = collect_decorated_code,
+    CodeBlock = collect_code
+  },
   {Pandoc = Pandoc}
 }
