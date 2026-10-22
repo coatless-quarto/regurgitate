@@ -56,7 +56,7 @@ The `regurgitate` extension requires Quarto v1.7.0 or later. It has been tested 
 
 ## What configuration options are available?
 
-The regurgitate extension provides four configuration options:
+The regurgitate extension's configuration options include:
 
 ```yaml
 extensions:

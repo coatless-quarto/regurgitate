@@ -31,7 +31,7 @@ That's it! All code blocks will now appear in an appendix at the end.
 
 ## Configuration
 
-Three independent options control behavior:
+Three of the extension's options control where code and results appear:
 
 ```yaml
 extensions:
