@@ -218,147 +218,108 @@ local function get_filename(block)
 end
 
 --------------------------------------------------------------------------------
--- Code Block Extraction
+-- Code Block Collection
 --------------------------------------------------------------------------------
 
---- Extract code blocks and their results from a Quarto cell div.
--- Parses the cell structure to find code blocks (marked with "cell-code" class)
--- and their associated output divs.
--- @param div pandoc.Div The Quarto cell div to process
--- @return table Array of {code, results, filename} entries
--- @return string The detected programming language
-local function extract_cell_contents(div)
-  local code_and_results = {}
-  local lang = "text"
-  local last_code_index = nil
-  
-  -- Check cell-level appendix attribute
-  if not should_include_in_appendix(div) then
-    return code_and_results, lang
-  end
-  
-  for _, block in ipairs(div.content) do
-    if block.tag == "CodeBlock" then
-      -- Check if this is the main code block (has cell-code class)
-      local is_main_code = false
-      for _, class in ipairs(block.classes) do
-        if class == "cell-code" then
-          is_main_code = true
-          -- Get the language (first class that's not cell-code)
-          for _, c in ipairs(block.classes) do
-            if c ~= "cell-code" then
-              lang = c
-              break
-            end
-          end
-          break
-        end
-      end
-      
-      if is_main_code and should_include_in_appendix(block) then
-        -- Add this code block with an empty results list
-        table.insert(code_and_results, {
-          code = block,
-          results = {},
-          filename = get_filename(block) or get_filename(div)
-        })
-        last_code_index = #code_and_results
-      end
-    elseif block.tag == "Div" and is_code_output(block) then
-      -- Attach result to the most recent code block
-      if last_code_index then
-        table.insert(code_and_results[last_code_index].results, block)
-      end
+--- The Quarto cell the walk is currently inside, if any.
+-- @field include boolean Whether the cell's code goes in the appendix
+-- @field filename string|nil Cell-level filename attribute
+local current_cell = nil
+
+--- The most recent cell code entry; cell outputs attach to it.
+local last_entry = nil
+
+--- Get the language of a cell's code block.
+-- @param block pandoc.CodeBlock A code block with the "cell-code" class
+-- @return string The first class that isn't "cell-code", or "text"
+local function get_cell_lang(block)
+  for _, c in ipairs(block.classes) do
+    if c ~= "cell-code" then
+      return c
     end
   end
-  
-  return code_and_results, lang
+  return "text"
 end
 
---- Collect all code blocks from document blocks.
--- Iterates through document blocks, identifying Quarto cells and standalone
--- code blocks, and adds them to the global code_blocks table.
--- @param blocks table Array of pandoc.Block elements
--- @return nil
-local function collect_blocks(blocks)
-  log("=== collect_blocks called with " .. #blocks .. " blocks ===")
-  
-  for i, block in ipairs(blocks) do
-    log("Block " .. i .. ": type=" .. block.tag)
-    
-    if block.tag == "Div" and is_cell_div(block) then
-      log("  -> Found a Quarto cell")
-      -- This is a Quarto cell, extract code and results
-      local code_and_results, lang = extract_cell_contents(block)
-      
-      if code_and_results and #code_and_results > 0 then
-        log("  -> Extracted " .. #code_and_results .. " code block(s) with language: " .. lang)
-        
-        -- Add each code block from the cell separately with its paired results
-        -- Using 'j' to avoid shadowing outer 'i'
-        for j, pair in ipairs(code_and_results) do
-          log("  -> Code block " .. j .. " has " .. #pair.results .. " result(s)")
-          local code_entry = {
-            code = pair.code,
-            results = pair.results,
-            lang = lang,
-            is_cell = true,
-            filename = pair.filename
-          }
-          table.insert(code_blocks, code_entry)
-          log("  -> Added code block " .. j .. " to code_blocks (total now: " .. #code_blocks .. ")")
-        end
-      else
-        log("  -> No code found in cell (or excluded)")
-      end
-      
-    elseif block.tag == "CodeBlock" then
-      log("  -> Found a standalone CodeBlock")
-      
-      -- Check if should be included
-      if not should_include_in_appendix(block) then
-        log("  -> CodeBlock excluded via attribute")
-      elseif block.classes and #block.classes > 0 then
-        log("  -> CodeBlock has " .. #block.classes .. " classes")
-        log("  -> First class: " .. (block.classes[1] or "nil"))
-        -- Only collect if it has language classes (not a result block)
-        local code_entry = {
-          code = block,
-          results = {},
-          lang = block.classes[1] or "text",
-          is_cell = false,
-          filename = get_filename(block)
-        }
-        table.insert(code_blocks, code_entry)
-        log("  -> Added to code_blocks (total now: " .. #code_blocks .. ")")
-      else
-        log("  -> CodeBlock has no classes, skipping (likely a result)")
-      end
+--- Add a code block to the global code_blocks table if it belongs in the
+-- appendix.
+-- Cell code (marked with the "cell-code" class) is paired with the outputs
+-- that follow it. Other code blocks need a language class; unclassed blocks
+-- are usually results.
+-- @param block pandoc.CodeBlock The code block to check
+-- @return boolean True if the block was collected
+local function collect_code_block(block)
+  if block.classes:includes("cell-code") then
+    if not current_cell or not current_cell.include
+      or not should_include_in_appendix(block) then
+      log("  -> Cell code excluded")
+      return false
     end
+    last_entry = {
+      code = block,
+      results = {},
+      lang = get_cell_lang(block),
+      is_cell = true,
+      filename = get_filename(block) or current_cell.filename
+    }
+    table.insert(code_blocks, last_entry)
+    log("  -> Added cell code block (total now: " .. #code_blocks .. ")")
+    return true
   end
   
-  log("=== collect_blocks finished, collected " .. #code_blocks .. " code blocks ===")
+  if not should_include_in_appendix(block) then
+    log("  -> CodeBlock excluded via attribute")
+    return false
+  elseif #block.classes == 0 then
+    log("  -> CodeBlock has no classes, skipping (likely a result)")
+    return false
+  end
+  
+  table.insert(code_blocks, {
+    code = block,
+    results = {},
+    lang = block.classes[1],
+    is_cell = false,
+    filename = get_filename(block)
+  })
+  log("  -> Added standalone code block (total now: " .. #code_blocks .. ")")
+  return true
 end
 
---- Remove the code that moved to the appendix from a Quarto cell.
--- Outputs stay in place, and so does code excluded from the appendix.
--- @param div pandoc.Div The Quarto cell div to process
--- @return pandoc.Div The cell without its collected code blocks
-local function remove_cell_code(div)
-  if not should_include_in_appendix(div) then
-    return div
-  end
-
-  local content = {}
-  for _, block in ipairs(div.content) do
-    local moved = block.tag == "CodeBlock" and block.classes:includes("cell-code")
-      and should_include_in_appendix(block)
-    if not moved then
-      table.insert(content, block)
+--- Track Quarto cells and collect their outputs during the walk.
+-- The walk runs top-down, so a cell is seen before the code and outputs
+-- inside it, wherever the cell sits (callouts, tabsets, columns, ...).
+-- @param div pandoc.Div The div element being visited
+-- @return nil|pandoc.Div Unchanged div
+-- @return boolean|nil False to skip the div's contents
+local function collect_div(div)
+  if is_cell_div(div) then
+    log("Found a Quarto cell")
+    current_cell = {
+      include = should_include_in_appendix(div),
+      filename = get_filename(div)
+    }
+    last_entry = nil
+  elseif is_code_output(div) then
+    -- Attach the output to the most recent code block of this cell, and
+    -- don't look for code blocks inside the output itself
+    if last_entry then
+      table.insert(last_entry.results, div)
     end
+    return nil, false
   end
-  div.content = content
-  return div
+  return nil
+end
+
+--- Collect a code block during the walk.
+-- Collected code is removed from the document when show_code_inline is false.
+-- @param block pandoc.CodeBlock The code block being visited
+-- @return nil|table Unchanged block, or an empty list to remove it
+local function collect_code(block)
+  if collect_code_block(block) and not options.show_code_inline then
+    return {}
+  end
+  return nil
 end
 
 --------------------------------------------------------------------------------
@@ -561,9 +522,8 @@ end
 --------------------------------------------------------------------------------
 
 --- Process the complete Pandoc document.
--- This is the main entry point for the filter. It collects code blocks,
--- optionally removes inline code, builds the appendix, and appends it
--- to the document.
+-- Runs after the collection walk. It builds the appendix from the collected
+-- code blocks and appends it to the document.
 -- @param doc pandoc.Pandoc The complete document
 -- @return pandoc.Pandoc The modified document with appendix
 function Pandoc(doc)
@@ -575,36 +535,12 @@ function Pandoc(doc)
     return doc
   end
   
-  -- Collect all code blocks
-  collect_blocks(doc.blocks)
-  
   if #code_blocks == 0 then
     log("No code blocks collected, returning document unchanged")
     return doc
   end
   
   log("Collected " .. #code_blocks .. " code blocks total")
-  
-  -- Optionally remove inline code (if show_code_inline is false)
-  if not options.show_code_inline then
-    log("Removing inline code (show_code_inline is false)")
-    local new_blocks = {}
-    for _, block in ipairs(doc.blocks) do
-      if block.tag == "Div" and is_cell_div(block) then
-        log("  Removing code from cell div")
-        table.insert(new_blocks, remove_cell_code(block))
-      elseif block.tag == "CodeBlock" and block.classes and #block.classes > 0
-        and should_include_in_appendix(block) then
-        log("  Skipping standalone code block")
-      else
-        table.insert(new_blocks, block)
-      end
-    end
-    doc.blocks = new_blocks
-    log("Removed inline code, " .. #doc.blocks .. " blocks remain")
-  else
-    log("Keeping inline code (show_code_inline is true)")
-  end
   
   -- Build the appendix
   log("=== Building appendix ===")
@@ -660,9 +596,11 @@ end
 --------------------------------------------------------------------------------
 
 --- Filter table for Pandoc.
--- Defines the order of filter execution: Meta first, then Pandoc.
+-- Defines the order of filter execution: Meta first, then a top-down walk
+-- that collects code blocks, then Pandoc.
 -- @return table Array of filter tables
 return {
   {Meta = Meta},
+  {traverse = "topdown", Div = collect_div, CodeBlock = collect_code},
   {Pandoc = Pandoc}
 }
