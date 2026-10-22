@@ -10,6 +10,10 @@ format:
 
 # 0.0.0-dev.1: ???? (??-??-????)
 
+## Breaking changes
+
+- regurgitate now requires Quarto 1.10 or later.
+
 ## Features
 
 - `regurgitate` creates a "Code Appendix" at the end of your document containing all code blocks.
@@ -18,4 +22,23 @@ format:
   - `show-code-inline`: Control whether code remains inline or is removed.
   - `show-output-results`: Control whether execution results are included in appendix.
 - Supports multiple programming languages (Python, R, Julia, etc.).
+
+## Bug fixes
+
+- `appendix-level` now sets the level of the appendix heading. Previously, the
+  heading was always level 1.
+- `show-code-inline: false` now removes only the code that moves to the
+  appendix. Cell outputs stay in place, including those of `echo: false` cells,
+  and code marked `appendix: false` stays inline. Previously, whole cells
+  disappeared from the document, outputs included.
+- regurgitate now collects code blocks and cells inside callouts, tabsets and
+  columns, and `show-code-inline: false` removes their code there too.
+  Previously, only top-level code reached the appendix.
+- Cells and code blocks with a `filename` now appear in the appendix, labeled
+  with their filename when `show-filename` is on. Previously, they were left out.
+
+## Documentation
+
+- The README, home page and FAQ no longer say that regurgitate has only three or
+  four options.
 
