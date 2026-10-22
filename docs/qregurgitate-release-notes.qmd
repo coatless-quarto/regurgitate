@@ -25,20 +25,5 @@ format:
 
 ## Bug fixes
 
-- `appendix-level` now sets the level of the appendix heading. Previously, the
-  heading was always level 1.
-- `show-code-inline: false` now removes only the code that moves to the
-  appendix. Cell outputs stay in place, including those of `echo: false` cells,
-  and code marked `appendix: false` stays inline. Previously, whole cells
-  disappeared from the document, outputs included.
-- regurgitate now collects code blocks and cells inside callouts, tabsets and
-  columns, and `show-code-inline: false` removes their code there too.
-  Previously, only top-level code reached the appendix.
-- Cells and code blocks with a `filename` now appear in the appendix, labeled
-  with their filename when `show-filename` is on. Previously, they were left out.
-
-## Documentation
-
-- The README, home page and FAQ no longer say that regurgitate has only three or
-  four options.
-
+- The appendix gathers code from cells inside callouts, tabsets and columns, and labels cells that have a `filename`.
+- `show-code-inline: false` moves only the code to the appendix and keeps outputs in place, and `appendix-level` sets the heading level.
