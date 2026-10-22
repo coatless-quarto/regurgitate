@@ -139,7 +139,7 @@ function Meta(meta)
     
     -- Numeric options
     if opts['appendix-level'] then
-      options.appendix_level = tonumber(opts['appendix-level']) or 1
+      options.appendix_level = tonumber(pandoc.utils.stringify(opts['appendix-level'])) or 1
       log("appendix-level: " .. tostring(options.appendix_level))
     end
     
