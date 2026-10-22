@@ -50,7 +50,7 @@ your-project/
 
 ## Is the regurgitate extension compatible with all Quarto versions?
 
-The `regurgitate` extension requires Quarto v1.7.0 or later. It has been tested with both standalone code blocks and Quarto executable cells (Python, R, etc.).
+The `regurgitate` extension requires Quarto v1.10.0 or later. It has been tested with both standalone code blocks and Quarto executable cells (Python, R, etc.).
 
 # Configuration
 
