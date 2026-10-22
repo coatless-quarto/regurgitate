@@ -340,6 +340,27 @@ local function collect_blocks(blocks)
   log("=== collect_blocks finished, collected " .. #code_blocks .. " code blocks ===")
 end
 
+--- Remove the code that moved to the appendix from a Quarto cell.
+-- Outputs stay in place, and so does code excluded from the appendix.
+-- @param div pandoc.Div The Quarto cell div to process
+-- @return pandoc.Div The cell without its collected code blocks
+local function remove_cell_code(div)
+  if not should_include_in_appendix(div) then
+    return div
+  end
+
+  local content = {}
+  for _, block in ipairs(div.content) do
+    local moved = block.tag == "CodeBlock" and block.classes:includes("cell-code")
+      and should_include_in_appendix(block)
+    if not moved then
+      table.insert(content, block)
+    end
+  end
+  div.content = content
+  return div
+end
+
 --------------------------------------------------------------------------------
 -- Display Helpers
 --------------------------------------------------------------------------------
@@ -570,8 +591,10 @@ function Pandoc(doc)
     local new_blocks = {}
     for _, block in ipairs(doc.blocks) do
       if block.tag == "Div" and is_cell_div(block) then
-        log("  Skipping cell div")
-      elseif block.tag == "CodeBlock" and block.classes and #block.classes > 0 then
+        log("  Removing code from cell div")
+        table.insert(new_blocks, remove_cell_code(block))
+      elseif block.tag == "CodeBlock" and block.classes and #block.classes > 0
+        and should_include_in_appendix(block) then
         log("  Skipping standalone code block")
       else
         table.insert(new_blocks, block)
