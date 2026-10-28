@@ -36,6 +36,8 @@ website:
       - section: "Extra"
         contents:
         - qregurgitate-release-notes.qmd
+        - href: https://blog.thecoatlessprofessor.com/projects/regurgitate/
+          text: "Blog posts"
 
 format: 
   html:
