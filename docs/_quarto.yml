@@ -21,7 +21,8 @@ website:
         contents:
         - section: "Getting Started"
           contents:
-            - qregurgitate-basic.qmd
+            - qregurgitate-sample.qmd
+            - qregurgitate-combined.qmd
         - section: "Display"
           contents:
             - qregurgitate-group-by-language.qmd

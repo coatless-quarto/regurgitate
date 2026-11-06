@@ -1,17 +1,18 @@
 ---
 title: "Excluding Blocks"
+engine: knitr
 filters:
   - regurgitate
 ---
 
 Not every code block belongs in the appendix. Setup code, credential handling, or exploratory snippets might clutter the code reference. The `appendix: false` attribute excludes specific blocks while keeping them visible inline.
 
-```markdown
-```{python}
+````markdown
+```{{python}}
 #| appendix: false
 # This code will NOT appear in the appendix
 ```
-```
+````
 
 ## Analysis Workflow
 
