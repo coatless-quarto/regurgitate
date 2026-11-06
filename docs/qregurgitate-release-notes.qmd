@@ -27,3 +27,4 @@ format:
 
 - The appendix gathers code from cells inside callouts, tabsets and columns, and labels cells that have a `filename`.
 - `show-code-inline: false` moves only the code to the appendix and keeps outputs in place, and `appendix-level` sets the heading level.
+- A knitr cell that prints output partway through stays one code block in the appendix, followed by its outputs.
