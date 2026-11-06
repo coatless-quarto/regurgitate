@@ -1,0 +1,18 @@
+---
+title: "regurgitate: knitr cells with output in the middle"
+engine: knitr
+filters:
+  - regurgitate
+---
+
+```{r}
+x <- 1
+x
+y <- 2
+y
+```
+
+```{r}
+z <- 3
+z
+```
