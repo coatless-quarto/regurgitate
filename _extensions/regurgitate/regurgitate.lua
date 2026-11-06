@@ -15,8 +15,8 @@
 ---@field debug boolean Enable verbose debug logging
 
 ---@class CodeEntry
----@field code pandoc.CodeBlock The code block element
----@field results pandoc.Div[] Output divs that follow the code in its cell
+---@field code pandoc.CodeBlock The code block element, with a knitr cell's fragments joined
+---@field results pandoc.Div[] Output divs from the code's cell, in order
 ---@field lang string Programming language identifier
 ---@field is_cell boolean Whether this came from a Quarto cell
 ---@field filename string|nil Optional filename label
@@ -186,9 +186,9 @@ local current_cell = nil
 local last_entry = nil
 
 -- Add a code block to `code_blocks` if it belongs in the appendix.
--- Cell code (marked with the "cell-code" class) is paired with the outputs
--- that follow it. Other code blocks need a language class; unclassed blocks
--- are usually results.
+-- Cell code (marked with the "cell-code" class) gives one entry per cell,
+-- paired with the cell's outputs. Other code blocks need a language class;
+-- unclassed blocks are usually results.
 ---@param block pandoc.CodeBlock
 ---@param filename? string Filename from the block's filename wrapper
 ---@return boolean collected
@@ -200,13 +200,25 @@ local function collect_code_block(block, filename)
       and should_include_in_appendix(block)) then
       return false
     end
+    -- The language is the first class that isn't "cell-code"
+    local lang = block.classes:find_if(function(class)
+      return class ~= "cell-code"
+    end) or "text"
+
+    -- knitr splits a cell's code wherever output appears, so one cell can
+    -- hold several "cell-code" blocks. Join them into the cell's entry so
+    -- the cell stays one block in the appendix, with its outputs after it.
+    if last_entry and last_entry.lang == lang then
+      last_entry.code = pandoc.CodeBlock(
+        last_entry.code.text .. "\n" .. block.text, last_entry.code.attr)
+      log("Joined a " .. lang .. " code fragment to code block " .. #code_blocks)
+      return true
+    end
+
     entry = {
       code = block,
       results = {},
-      -- The language is the first class that isn't "cell-code"
-      lang = block.classes:find_if(function(class)
-        return class ~= "cell-code"
-      end) or "text",
+      lang = lang,
       is_cell = true,
       filename = filename or block.attributes["filename"] or current_cell.filename
     }
