@@ -53,6 +53,12 @@ extensions:
   - `true`: Include execution output in appendix
   - `false`: Only code in appendix (no output)
 
+## Learn more
+
+- [Documentation](https://quarto.thecoatlessprofessor.com/regurgitate/)
+- [Release notes](https://quarto.thecoatlessprofessor.com/regurgitate/qregurgitate-release-notes.html)
+- [Blog posts](https://blog.thecoatlessprofessor.com/projects/regurgitate/)
+
 ## License
 
 regurgitate is licensed under AGPL-3.0-or-later with an exception: what you write and render with regurgitate stays yours, along with the output, under any terms you like. See [LICENSE](LICENSE) and [LICENSE-EXCEPTION.md](LICENSE-EXCEPTION.md).
