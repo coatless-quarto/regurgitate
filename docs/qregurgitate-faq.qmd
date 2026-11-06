@@ -199,17 +199,18 @@ extensions:
 
 Your appendix will have separate sections for R, Python, Julia, etc.
 
-## What if my cell has multiple code chunks?
+## What if a cell prints output partway through?
 
-The extension handles cells with multiple code chunks correctly. Each chunk and its results are collected:
+The cell stays in one piece. With knitr, a cell that prints output before its last line is shown inline as several pieces: code, output, more code, more output. regurgitate joins the code back together, so the appendix shows the whole cell as one code block, followed by each of its outputs in order:
 
-```{{python}}
-print("First chunk")
-
-print("Second chunk")
+```{{r}}
+x <- 1:3
+x
+y <- x * 2
+y
 ```
 
-Both chunks will appear in the appendix.
+In the appendix, all four lines form one code block, followed by `[1] 1 2 3` and `[1] 2 4 6`. You don't need `results: hold` for this. Jupyter cells already keep their code in one block.
 
 ## Can I use this extension with other filters?
 
