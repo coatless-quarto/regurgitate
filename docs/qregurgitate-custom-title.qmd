@@ -1,0 +1,66 @@
+---
+title: "Custom Appendix Title"
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    appendix-title: "Source Code Listing"
+---
+
+The default appendix is titled "Code Appendix." You can customize this with `appendix-title` to match your document's style or terminology—perhaps "Source Code," "Implementation Details," or "Reproducibility Materials."
+
+```yaml
+extensions:
+  regurgitate:
+    appendix-title: "Source Code Listing"
+```
+
+## Fibonacci Sequence
+
+A classic recursive implementation with memoization:
+
+```{python}
+def fibonacci(n, memo={}):
+    """Return the nth Fibonacci number using memoization."""
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        return n
+    
+    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)
+    return memo[n]
+
+# First 15 Fibonacci numbers
+sequence = [fibonacci(i) for i in range(15)]
+print("Fibonacci sequence:")
+print(sequence)
+```
+
+## Prime Number Sieve
+
+The Sieve of Eratosthenes finds all primes up to a given limit:
+  
+```{r}
+sieve_of_eratosthenes <- function(n) {
+  if (n < 2) return(integer(0))
+  
+  is_prime <- rep(TRUE, n)
+  is_prime[1] <- FALSE
+  
+  for (i in 2:floor(sqrt(n))) {
+    if (is_prime[i]) {
+      is_prime[seq(i*i, n, by = i)] <- FALSE
+    }
+  }
+  
+  which(is_prime)
+}
+
+primes <- sieve_of_eratosthenes(50)
+cat("Primes up to 50:\n")
+print(primes)
+```
+
+---
+
+*The appendix below is titled "Source Code Listing" instead of the default "Code Appendix."*

@@ -1,0 +1,83 @@
+---
+title: "Group by Language"
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    group-by-language: true
+---
+
+When your document uses multiple programming languages, the appendix can become difficult to navigate. The `group-by-language` option organizes code blocks by language, creating separate sections for Python, R, SQL, and so on.
+
+This is particularly helpful for tutorials that compare implementations across languages, or for polyglot data science workflows.
+
+```yaml
+extensions:
+  regurgitate:
+    group-by-language: true
+```
+
+## Data Preparation
+
+We begin by creating our dataset in Python:
+
+```{python}
+# Simulated experiment data: treatment vs control
+treatment = [23, 25, 28, 24, 26, 27, 29, 25]
+control = [19, 21, 20, 22, 18, 20, 21, 19]
+
+print("Treatment group:", treatment)
+print("Control group:", control)
+```
+
+## Statistical Test
+
+Now we perform the analysis in R, using a built-in t-test:
+
+```{r}
+# Two-sample t-test comparing treatment and control
+treatment <- c(23, 25, 28, 24, 26, 27, 29, 25)
+control <- c(19, 21, 20, 22, 18, 20, 21, 19)
+
+t.test(treatment, control)
+```
+
+## Effect Size
+
+Back to Python to compute Cohen's d:
+
+```{python}
+# Cohen's d for effect size
+import math
+
+def cohens_d(group1, group2):
+    n1, n2 = len(group1), len(group2)
+    mean1 = sum(group1) / n1
+    mean2 = sum(group2) / n2
+    
+    var1 = sum((x - mean1)**2 for x in group1) / (n1 - 1)
+    var2 = sum((x - mean2)**2 for x in group2) / (n2 - 1)
+    
+    pooled_std = math.sqrt(((n1-1)*var1 + (n2-1)*var2) / (n1+n2-2))
+    return (mean1 - mean2) / pooled_std
+
+d = cohens_d(treatment, control)
+print(f"Cohen's d = {d:.2f} (large effect)")
+```
+
+## Visualization
+
+Finally, a comparison plot in R:
+
+```{r}
+# Side-by-side boxplot
+boxplot(treatment, control,
+        names = c("Treatment", "Control"),
+        col = c("coral", "skyblue"),
+        main = "Treatment vs Control",
+        ylab = "Response")
+```
+
+---
+
+*In the appendix below, all Python code appears together under "Python", and all R code under "R"—making it easy to extract language-specific code.*

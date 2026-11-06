@@ -1,0 +1,83 @@
+---
+title: "Numbered Code Blocks"
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    number-blocks: true
+---
+
+When a document contains many code blocks, referencing specific pieces of code can be challenging. The `number-blocks` option adds sequential labels -- "Code Block 1," "Code Block 2," and so on -- making it to reference code in discussions, reviews, or assignments.
+
+```yaml
+extensions:
+  regurgitate:
+    number-blocks: true
+```
+
+## Step 1: Generate Data
+
+```{python}
+import random
+
+random.seed(42)
+data = [random.gauss(100, 15) for _ in range(50)]
+print(f"Generated {len(data)} observations")
+print(f"Range: [{min(data):.1f}, {max(data):.1f}]")
+```
+
+## Step 2: Clean Data
+
+```{python}
+# Remove outliers beyond 2 standard deviations
+mean_val = sum(data) / len(data)
+std_val = (sum((x - mean_val)**2 for x in data) / len(data)) ** 0.5
+
+lower = mean_val - 2 * std_val
+upper = mean_val + 2 * std_val
+
+cleaned = [x for x in data if lower <= x <= upper]
+removed = len(data) - len(cleaned)
+
+print(f"Removed {removed} outliers")
+print(f"Remaining: {len(cleaned)} observations")
+```
+
+## Step 3: Compute Statistics
+
+```{python}
+n = len(cleaned)
+mean_clean = sum(cleaned) / n
+median_clean = sorted(cleaned)[n // 2]
+std_clean = (sum((x - mean_clean)**2 for x in cleaned) / (n - 1)) ** 0.5
+
+print("=== Final Statistics ===")
+print(f"N:      {n}")
+print(f"Mean:   {mean_clean:.2f}")
+print(f"Median: {median_clean:.2f}")
+print(f"Std:    {std_clean:.2f}")
+```
+
+## Step 4: Visualize
+
+```{r}
+# Histogram with normal curve overlay
+set.seed(42)
+cleaned <- rnorm(47, mean = 100, sd = 14)  # Simulated cleaned data
+
+hist(cleaned, 
+     freq = FALSE,
+     main = "Distribution of Cleaned Data",
+     xlab = "Value",
+     col = "lightblue",
+     breaks = 10)
+
+curve(dnorm(x, mean = mean(cleaned), sd = sd(cleaned)), 
+      add = TRUE, col = "darkblue", lwd = 2)
+```
+
+
+## Conclusion
+
+Each block in the appendix below is numbered (Code Block 1, Code Block 2, etc.). This makes it easy to say "see Code Block 2 for the outlier removal logic."
+

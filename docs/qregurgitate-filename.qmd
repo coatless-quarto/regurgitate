@@ -1,0 +1,77 @@
+---
+title: "Filename Labels"
+filters:
+  - regurgitate
+---
+
+When code blocks represent actual files in a project, the `filename` attribute documents the source location. The `regurgitate` extension displays these filenames in the appendix, helping readers understand your project structure and locate files for reproduction.
+
+This is enabled by default (`show-filename: true`). The filename is specified per code block:
+
+```markdown
+```{python}
+#| filename: "src/utils.py"
+# your code here
+```
+```
+
+## Project Structure
+
+This analysis is organized across multiple files:
+
+```{python}
+#| filename: "src/config.py"
+# Configuration settings for the analysis
+
+SAMPLE_SIZE = 100
+CONFIDENCE_LEVEL = 0.95
+RANDOM_SEED = 42
+DECIMAL_PLACES = 3
+
+print("Configuration loaded successfully")
+```
+
+```{python}
+#| filename: "src/statistics.py"
+# Core statistical functions
+
+def mean(data):
+    """Calculate arithmetic mean."""
+    return sum(data) / len(data)
+
+def variance(data, sample=True):
+    """Calculate variance (sample or population)."""
+    n = len(data)
+    mu = mean(data)
+    ss = sum((x - mu) ** 2 for x in data)
+    return ss / (n - 1) if sample else ss / n
+
+def std_dev(data, sample=True):
+    """Calculate standard deviation."""
+    return variance(data, sample) ** 0.5
+
+print("Statistical functions defined")
+```
+
+```{python}
+#| filename: "src/main.py"
+# Main analysis script
+
+import random
+
+# Using config values (simulated import)
+random.seed(42)
+data = [random.gauss(50, 10) for _ in range(100)]
+
+# Using statistics functions (simulated import)
+result_mean = sum(data) / len(data)
+result_std = (sum((x - result_mean)**2 for x in data) / 99) ** 0.5
+
+print(f"Analysis complete:")
+print(f"  Mean: {result_mean:.3f}")
+print(f"  Std:  {result_std:.3f}")
+```
+
+---
+
+*In the appendix, each code block shows its filename (e.g., "File: src/config.py"), making it clear which file each piece of code belongs to.*

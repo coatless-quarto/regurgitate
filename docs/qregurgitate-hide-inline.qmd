@@ -1,0 +1,53 @@
+---
+title: "Hide Inline Code"
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    show-code-inline: false
+---
+
+Sometimes you want a clean, narrative-focused document where readers see only results—not code. Setting `show-code-inline: false` removes code from its original positions while preserving all output. The complete source code moves to the appendix.
+
+This approach works well for executive summaries, journal articles, or any document where the story matters more than the implementation.
+
+```yaml
+extensions:
+  regurgitate:
+    show-code-inline: false
+```
+
+## Quarterly Sales Analysis
+
+Our analysis examines sales performance across four quarters:
+
+```{python}
+# Quarterly sales data (in thousands)
+quarters = ["Q1", "Q2", "Q3", "Q4"]
+sales = [142, 168, 155, 189]
+
+total = sum(sales)
+average = total / len(sales)
+growth = (sales[-1] - sales[0]) / sales[0] * 100
+
+print("=== Quarterly Sales Report ===")
+print(f"Total Annual Sales: ${total}K")
+print(f"Average per Quarter: ${average:.1f}K")
+print(f"Q1 to Q4 Growth: {growth:.1f}%")
+print(f"Best Quarter: {quarters[sales.index(max(sales))]} (${max(sales)}K)")
+```
+
+## Statistical Summary
+
+```{r}
+# Summary statistics for the built-in mtcars dataset
+cat("=== Vehicle Performance Summary ===\n\n")
+cat("Miles per Gallon:\n")
+print(summary(mtcars$mpg))
+cat("\nHorsepower:\n")
+print(summary(mtcars$hp))
+```
+
+---
+
+*Notice how the sections above show only the output—no code blocks interrupt the narrative. Readers who want to see the implementation can find everything in the appendix.*

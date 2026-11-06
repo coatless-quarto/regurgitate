@@ -1,49 +1,69 @@
 ---
-title: "Code Only (No Results in Appendix)"
-format: html
+title: "Code-Only Appendix"
 filters:
   - regurgitate
 extensions:
   regurgitate:
-    group-by-language: true
-    show-code-inline: true
     show-output-results: false
 ---
 
-## Introduction
+By default, the appendix includes both code and its output. Setting `show-output-results: false` creates a code-only appendix—useful when output is lengthy, environment-specific, or simply not needed for reproduction.
 
-This document demonstrates `show-output-results: false`, which includes only code in the appendix without execution results.
+This keeps the appendix compact and focused purely on source code.
 
-This is useful when you want readers to see output inline but have a clean code reference at the end.
+```yaml
+extensions:
+  regurgitate:
+    show-output-results: false
+```
 
-## Python Example
+## Monte Carlo Simulation
 
-Let's do some calculations:
+We estimate π using random sampling—a classic demonstration of the Monte Carlo method:
 
 ```{python}
-print("Hello from Python!")
-result = 2 + 2
-print(f"2 + 2 = {result}")
+import random
+
+def estimate_pi(n_points):
+    """Estimate pi using Monte Carlo simulation."""
+    inside_circle = 0
+    
+    for _ in range(n_points):
+        x = random.uniform(-1, 1)
+        y = random.uniform(-1, 1)
+        if x**2 + y**2 <= 1:
+            inside_circle += 1
+    
+    return 4 * inside_circle / n_points
+
+random.seed(42)
+estimates = [estimate_pi(10000) for _ in range(5)]
+
+print("Pi estimates from 5 runs:")
+for i, est in enumerate(estimates, 1):
+    print(f"  Run {i}: {est:.4f}")
+print(f"  Mean:   {sum(estimates)/len(estimates):.4f}")
+print(f"  Actual: {3.14159:.4f}")
 ```
 
-The output appears above inline, but won't be repeated in the appendix.
-
-## R Example
-
-Some R calculations:
+## Bootstrap Confidence Interval
 
 ```{r}
-# Create a vector
-numbers <- c(1, 2, 3, 4, 5)
-print(paste("Sum:", sum(numbers)))
-print(paste("Mean:", mean(numbers)))
+# Bootstrap 95% CI for the mean of a sample
+set.seed(123)
+original_sample <- c(12, 15, 14, 10, 13, 11, 16, 14, 15, 12)
+
+n_bootstrap <- 1000
+boot_means <- replicate(n_bootstrap, {
+  resample <- sample(original_sample, replace = TRUE)
+  mean(resample)
+})
+
+ci <- quantile(boot_means, c(0.025, 0.975))
+cat("Original sample mean:", mean(original_sample), "\n")
+cat("95% Bootstrap CI: [", round(ci[1], 2), ",", round(ci[2], 2), "]\n")
 ```
 
-## Conclusion
-
-In the Code Appendix at the end, you'll see:
-
-- All code blocks grouped by language
-- No execution results/output (because `show-output-results: false`)
-
-This creates a cleaner code reference while keeping output visible inline for understanding.
+---
+  
+*The appendix below contains only the source code—the printed output you see above is not duplicated there. This keeps the code reference clean and concise.*

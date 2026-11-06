@@ -1,0 +1,92 @@
+---
+title: "Excluding Blocks"
+filters:
+  - regurgitate
+---
+
+Not every code block belongs in the appendix. Setup code, credential handling, or exploratory snippets might clutter the code reference. The `appendix: false` attribute excludes specific blocks while keeping them visible inline.
+
+```markdown
+```{python}
+#| appendix: false
+# This code will NOT appear in the appendix
+```
+```
+
+## Analysis Workflow
+
+### Configuration (Excluded)
+
+This setup block contains environment-specific paths and isn't useful for reproduction:
+
+```{python}
+#| appendix: false
+# Environment setup - excluded from appendix
+DATA_PATH = "/users/professor/local/data/"
+OUTPUT_DIR = "/tmp/analysis_results/"
+CACHE_ENABLED = True
+
+print("Environment configured (not in appendix)")
+```
+
+### Data Generation
+
+This is the reproducible part that readers need:
+
+```{python}
+import random
+
+def generate_sample(n, mu, sigma, seed=None):
+    """Generate a random sample from a normal distribution."""
+    if seed is not None:
+        random.seed(seed)
+    return [random.gauss(mu, sigma) for _ in range(n)]
+
+sample = generate_sample(n=30, mu=100, sigma=15, seed=123)
+print(f"Generated sample of {len(sample)} observations")
+print(f"Sample mean: {sum(sample)/len(sample):.2f}")
+```
+
+### Quick Check (Excluded)
+
+This exploratory code helped during development but isn't part of the final analysis:
+
+```{python}
+#| appendix: false
+# Exploratory check - excluded from appendix
+print("Quick sanity check...")
+print(f"Min: {min(sample):.1f}, Max: {max(sample):.1f}")
+print("Looks reasonable!")
+```
+
+### Final Analysis
+
+The hypothesis test readers need to reproduce:
+
+```{python}
+def one_sample_t_test(data, mu0):
+    """Perform a one-sample t-test against hypothesized mean mu0."""
+    n = len(data)
+    sample_mean = sum(data) / n
+    sample_var = sum((x - sample_mean)**2 for x in data) / (n - 1)
+    se = (sample_var / n) ** 0.5
+    t_stat = (sample_mean - mu0) / se
+    
+    return {
+        "t_statistic": t_stat,
+        "sample_mean": sample_mean,
+        "se": se,
+        "df": n - 1
+    }
+
+result = one_sample_t_test(sample, mu0=100)
+print("=== One-Sample T-Test (H0: μ = 100) ===")
+print(f"Sample mean: {result['sample_mean']:.2f}")
+print(f"Std error:   {result['se']:.2f}")
+print(f"t-statistic: {result['t_statistic']:.3f}")
+print(f"df:          {result['df']}")
+```
+
+---
+
+*The appendix contains only the two substantive code blocks (data generation and t-test). The configuration and exploratory blocks are excluded, keeping the code reference focused on what matters for reproduction.*

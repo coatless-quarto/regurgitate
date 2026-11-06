@@ -1,0 +1,42 @@
+---
+title: "Appendix Header Level"
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    appendix-level: 2
+---
+
+The appendix header defaults to level 1 (`<h1>` / `#`), making it a top-level section. Use `appendix-level` to adjust this from 1 to 6. Setting it to 2 or 3 makes the appendix a subsection, which is useful when your document has a specific structure or when integrating with Quarto books.
+
+```yaml
+extensions:
+  regurgitate:
+    appendix-level: 2
+```
+
+## Main Analysis
+
+Here we compute the correlation between two variables:
+
+```{python}
+# Sample data: hours studied vs exam score
+hours = [2, 3, 5, 7, 8, 10, 4, 6, 9, 5]
+scores = [65, 70, 78, 85, 88, 95, 72, 80, 90, 76]
+
+n = len(hours)
+mean_h = sum(hours) / n
+mean_s = sum(scores) / n
+
+numerator = sum((h - mean_h) * (s - mean_s) for h, s in zip(hours, scores))
+denom_h = sum((h - mean_h)**2 for h in hours) ** 0.5
+denom_s = sum((s - mean_s)**2 for s in scores) ** 0.5
+
+r = numerator / (denom_h * denom_s)
+print(f"Correlation coefficient: r = {r:.3f}")
+print("Interpretation: Strong positive relationship")
+```
+
+---
+
+*The appendix below uses an `<h2>` header (level 2), making it appear as a subsection rather than a major document section. Compare this with other demos where the appendix is level 1.*

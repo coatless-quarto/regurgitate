@@ -17,16 +17,27 @@ website:
     contents: 
       - text: "Home"
         file: index.qmd
-      - section: "Demos"
+      - section: "Examples"
         contents:
-        - text: "Code Only"
-          file: qregurgitate-code-only.qmd
-        - text: "Code in Appendix Only"
-          file: qregurgitate-remove-inline.qmd
-        - text: "Appendix with Results"
-          file: qregurgitate-with-results.qmd
-        - text: "Grouped Programming Languages"
-          file: qregurgitate-grouped.qmd
+        - section: "Getting Started"
+          contents:
+            - qregurgitate-basic.qmd
+        - section: "Display"
+          contents:
+            - qregurgitate-group-by-language.qmd
+            - qregurgitate-hide-inline.qmd
+            - qregurgitate-code-only.qmd
+        - section: "Appendix"
+          contents:
+            - qregurgitate-custom-title.qmd
+            - qregurgitate-header-level.qmd
+            - qregurgitate-no-separator.qmd
+        - section: "Blocks"
+          contents:
+            - qregurgitate-numbered.qmd
+            - qregurgitate-filename.qmd
+            - qregurgitate-collapsible.qmd
+            - qregurgitate-exclude.qmd
       - section: "Support"
         contents:
         - text: "FAQ"
