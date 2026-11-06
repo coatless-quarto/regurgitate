@@ -1,5 +1,6 @@
 ---
 title: "Appendix Header Level"
+engine: knitr
 filters:
   - regurgitate
 extensions:

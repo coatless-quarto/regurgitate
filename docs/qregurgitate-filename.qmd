@@ -1,5 +1,6 @@
 ---
 title: "Filename Labels"
+engine: knitr
 filters:
   - regurgitate
 ---
@@ -8,12 +9,12 @@ When code blocks represent actual files in a project, the `filename` attribute d
 
 This is enabled by default (`show-filename: true`). The filename is specified per code block:
 
-```markdown
-```{python}
+````markdown
+```{{python}}
 #| filename: "src/utils.py"
 # your code here
 ```
-```
+````
 
 ## Project Structure
 
