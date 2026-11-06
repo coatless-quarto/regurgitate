@@ -1,0 +1,99 @@
+---
+title: "Collapsible Sections"
+format: html
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    group-by-language: true
+    collapsible: true
+---
+
+For documents with substantial code, a long appendix can be overwhelming. The `collapsible` option wraps each language section in an expandable `<details>` element—readers click to expand only the sections they need.
+
+This feature requires `group-by-language: true` and only works in HTML output.
+
+```yaml
+extensions:
+  regurgitate:
+    group-by-language: true
+    collapsible: true
+```
+
+## Data Processing Pipeline
+
+We implement a simple ETL (Extract, Transform, Load) workflow using both languages.
+
+### Extract
+
+```{python}
+# Simulated data extraction
+raw_records = [
+    {"id": 1, "value": "  42  ", "valid": True},
+    {"id": 2, "value": "N/A", "valid": False},
+    {"id": 3, "value": " 37", "valid": True},
+    {"id": 4, "value": "51  ", "valid": True},
+]
+print(f"Extracted {len(raw_records)} records")
+```
+
+### Transform
+
+```{r}
+# Data transformation in R
+raw_values <- c(42, NA, 37, 51)
+
+# Clean and transform
+cleaned <- na.omit(raw_values)
+normalized <- (cleaned - mean(cleaned)) / sd(cleaned)
+
+cat("Transformed values (z-scores):\n")
+print(round(normalized, 3))
+```
+
+### Validate
+
+```{python}
+# Validation logic
+def validate_record(record):
+    """Check if a record meets quality criteria."""
+    if not record["valid"]:
+        return False, "Marked invalid"
+    
+    try:
+        value = float(record["value"].strip())
+        if value < 0 or value > 100:
+            return False, "Out of range"
+        return True, "OK"
+    except ValueError:
+        return False, "Not numeric"
+
+for rec in raw_records:
+    is_valid, reason = validate_record(rec)
+    status = "✓" if is_valid else "✗"
+    print(f"Record {rec['id']}: {status} ({reason})")
+```
+
+### Load
+
+```{r}
+# Final aggregation
+final_data <- c(42, 37, 51)  # Validated values
+
+summary_stats <- list(
+  n = length(final_data),
+  mean = mean(final_data),
+  sd = sd(final_data),
+  min = min(final_data),
+  max = max(final_data)
+)
+
+cat("=== Load Summary ===\n")
+cat("Records loaded:", summary_stats$n, "\n")
+cat("Mean value:", round(summary_stats$mean, 2), "\n")
+cat("Std deviation:", round(summary_stats$sd, 2), "\n")
+```
+
+---
+
+*In the appendix below, click on "Python" or "R" to expand and view that language's code. This keeps the appendix compact while still providing access to everything.*

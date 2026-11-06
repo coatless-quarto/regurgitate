@@ -1,0 +1,41 @@
+---
+title: "Separator Control"
+filters:
+  - regurgitate
+extensions:
+  regurgitate:
+    show-separator: false
+---
+
+By default, a horizontal rule (`<hr>`) appears before the appendix to visually separate it from the main content. Setting `show-separator: false` removes this divider for a more seamless transition—useful when you prefer a continuous flow or are applying custom CSS styling.
+
+```yaml
+extensions:
+  regurgitate:
+    show-separator: false
+```
+
+## Working with Matrices
+
+Matrix operations are fundamental in statistics and data science:
+
+```{r}
+# Create and manipulate a matrix
+A <- matrix(c(4, 2, 1, 3), nrow = 2, byrow = TRUE)
+B <- matrix(c(1, 0, 2, 1), nrow = 2, byrow = TRUE)
+
+cat("Matrix A:\n")
+print(A)
+
+cat("\nMatrix B:\n")
+print(B)
+
+cat("\nA × B (matrix multiplication):\n")
+print(A %*% B)
+
+cat("\nDeterminant of A:", det(A), "\n")
+```
+
+---
+
+*Look carefully at where this content ends and the appendix begins—there's no horizontal line separating them, creating a smoother visual transition.*

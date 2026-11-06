@@ -1,0 +1,63 @@
+---
+title: "Sample Usage"
+filters:
+  - regurgitate
+---
+
+# Overview 
+
+The `regurgitate` extension automatically collects all code blocks from your document and places them in a "Code Appendix" at the end. This is useful when you want readers to follow your narrative without hunting for code, while still providing complete source code for reproducibility. 
+
+Add the `regurgitate` filter to your document's YAML front matter like so:
+
+```md
+---
+title: "Sample Usage"
+filters:
+  - regurgitate
+---
+```
+
+And voila! With no configuration, code appears both in its original location *and* in the appendix.
+
+
+
+## Computing Summary Statistics
+
+Let's compute some summary statistics using Python. We can see both the Python code and its output here.
+
+```{python}
+# Calculate descriptive statistics for exam scores
+scores = [78, 85, 92, 88, 76, 95, 89, 84, 91, 87]
+
+n = len(scores)
+mean = sum(scores) / n
+variance = sum((x - mean) ** 2 for x in scores) / (n - 1)
+std_dev = variance ** 0.5
+
+print(f"Sample size: {n}")
+print(f"Mean: {mean:.1f}")
+print(f"Std Dev: {std_dev:.2f}")
+```
+
+## Visualizing a Distribution
+
+Similarly, we can create a histogram in R to visualize a distribution of reaction times.
+
+```{r}
+# Generate sample data, create a histogram, and summarize
+set.seed(42)
+reaction_times <- rnorm(200, mean = 250, sd = 30)
+
+hist(reaction_times, 
+     main = "Distribution of Reaction Times",
+     xlab = "Time (ms)", 
+     col = "steelblue",
+     breaks = 15)
+
+summary(reaction_times)
+```
+
+## Conclusion
+
+At the bottom of this page, you'll find a **Code Appendix** containing both code blocks above, making it easy for readers to copy all code at once. 
